@@ -24,6 +24,15 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    const database = client.db("exploreAsia");
+    const touristSpots = database.collection("touristSpots");
+
+    app.post("/tourist-spots", async (req, res) => {
+      const touristSpotInfo = req.body;
+      const result = await touristSpots.insertOne(touristSpotInfo);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     console.log(
