@@ -40,9 +40,49 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/user-tourist-spots", async (req, res) => {
+      const email = req.query.email;
+      const query = { userEmail: email };
+      const result = await touristSpots.find(query).toArray();
+      res.send(result);
+    });
+
     app.post("/tourist-spots", async (req, res) => {
       const touristSpotInfo = req.body;
       const result = await touristSpots.insertOne(touristSpotInfo);
+      res.send(result);
+    });
+
+    app.put("/tourist-spots/:id", async (req, res) => {
+      const id = req.params.id;
+      const touristSpot = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateTouristSpot = {
+        $set: {
+          imageURL: touristSpot.imageURL,
+          touristsSpotName: touristSpot.touristsSpotName,
+          countryName: touristSpot.countryName,
+          location: touristSpot.location,
+          description: touristSpot.description,
+          averageCost: touristSpot.averageCost,
+          seasonality: touristSpot.seasonality,
+          travelTime: touristSpot.travelTime,
+          totalVisitorsPerYear: touristSpot.totalVisitorsPerYear,
+        },
+      };
+      const result = await touristSpots.updateOne(
+        filter,
+        updateTouristSpot,
+        options
+      );
+      res.send(result);
+    });
+
+    app.delete("/tourist-spots/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await touristSpots.deleteOne(query);
       res.send(result);
     });
 
