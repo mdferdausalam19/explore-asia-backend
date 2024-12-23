@@ -106,7 +106,7 @@ run().catch(console.dir);
 
 app.get("/", (req, res) => {
   res.send(
-    "Welcome to the ExploreAsia server! Your gateway to Southeast Asia's wonders."
+    "Welcome to the ExploreAsia server! Your gateway to Asia's wonders."
   );
 });
 
