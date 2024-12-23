@@ -47,6 +47,16 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/all-tourist-spots", async (req, res) => {
+      const sort = req.query.sort || "asc";
+      const sortOrder = sort === "asc" ? 1 : -1;
+      const result = await touristSpots
+        .find()
+        .sort({ averageCost: sortOrder })
+        .toArray();
+      res.send(result);
+    });
+
     app.post("/tourist-spots", async (req, res) => {
       const touristSpotInfo = req.body;
       const result = await touristSpots.insertOne(touristSpotInfo);
